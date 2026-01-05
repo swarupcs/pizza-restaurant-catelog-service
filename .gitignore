@@ -136,4 +136,4 @@ dist
 .pnp.*
 
 logs
-config
+/config

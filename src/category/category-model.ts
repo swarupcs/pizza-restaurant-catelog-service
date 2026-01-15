@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 interface PriceConfiguration {
     [key: string]: {
-        priceType: "base" | "adiitional";
+        priceType: "base" | "aditional";
         availableOptions: string[];
     };
 }
@@ -23,7 +23,7 @@ export interface Category {
 const priceConfigurationSchema = new mongoose.Schema<PriceConfiguration>({
     priceType: {
         type: String,
-        enum: ["base", "additional"],
+        enum: ["base", "aditional"],
         required: true,
     },
     availableOptions: {

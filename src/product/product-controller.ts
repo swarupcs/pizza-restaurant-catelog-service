@@ -66,15 +66,14 @@ export class ProductController {
 
         const { productId } = req.params;
 
-        if ((req as AuthRequest).auth.role === Roles.MANAGER) {
-            const product = await this.productService.getProduct(productId);
-            if (!product) {
-                return next(createHttpError(404, "Product not found"));
-            }
+        const product = await this.productService.getProduct(productId);
+        if (!product) {
+            return next(createHttpError(404, "Product not found"));
+        }
 
+        if ((req as AuthRequest).auth.role !== Roles.ADMIN) {
             const tenant = (req as AuthRequest).auth.tenant;
-
-            if (product.tenantId !== String(tenant)) {
+            if (product.tenantId !== tenant) {
                 return next(
                     createHttpError(
                         403,

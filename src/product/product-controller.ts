@@ -87,7 +87,7 @@ export class ProductController {
         let oldImage: string | undefined;
 
         if (req.files?.image) {
-            oldImage = await this.productService.getProductImage(productId);
+            oldImage = product.image;
 
             const image = req.files.image as UploadedFile;
             imageName = uuidv4();
@@ -97,7 +97,7 @@ export class ProductController {
                 fileData: image.data.buffer,
             });
 
-            await this.storage.delete(oldImage!);
+            await this.storage.delete(oldImage);
         }
 
         const {

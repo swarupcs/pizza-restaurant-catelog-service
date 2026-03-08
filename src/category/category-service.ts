@@ -4,10 +4,14 @@ import { Category } from "./category-types";
 export class CategoryService {
     async create(category: Category) {
         const newCategory = new CategoryModel(category);
-        return newCategory.save();
+        return await newCategory.save();
     }
 
     async getAll() {
-        return CategoryModel.find();
+        return await CategoryModel.find();
+    }
+
+    async getOne(categoryId: string) {
+        return await CategoryModel.findOne({ _id: categoryId });
     }
 }

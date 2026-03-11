@@ -34,4 +34,6 @@ router.post(
     asyncWrapper(toppingController.create),
 );
 
+router.get("/", asyncWrapper(toppingController.get));
+
 export default router;

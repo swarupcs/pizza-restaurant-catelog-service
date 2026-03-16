@@ -50,7 +50,7 @@ export class ToppingController {
                 return {
                     id: topping._id,
                     name: topping.name,
-                    price: topping.name,
+                    price: topping.price,
                     tenantId: topping.tenantId,
                     image: this.storage.getObjectUri(topping.image),
                 };

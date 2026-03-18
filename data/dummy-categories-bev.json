@@ -3,18 +3,11 @@
     "priceConfiguration": {
         "Size": {
             "priceType": "base",
-            "availableOptions": [
-                "100ml",
-                "330ml",
-                "500ml"
-            ]
+            "availableOptions": ["100ml", "330ml", "500ml"]
         },
         "Chilling": {
             "priceType": "aditional",
-            "availableOptions": [
-                "Warm",
-                "Cold"
-            ]
+            "availableOptions": ["Warm", "Cold"]
         }
     },
     "attributes": [
@@ -22,19 +15,13 @@
             "name": "isHit",
             "widgetType": "switch",
             "defaultValue": "No",
-            "availableOptions": [
-                "Yes",
-                "No"
-            ]
+            "availableOptions": ["Yes", "No"]
         },
         {
             "name": "Alcohol",
             "widgetType": "radio",
             "defaultValue": "Non-Alcoholic",
-            "availableOptions": [
-                "Non-Alcoholic",
-                "Alcoholic"
-            ]
+            "availableOptions": ["Non-Alcoholic", "Alcoholic"]
         }
     ]
 }

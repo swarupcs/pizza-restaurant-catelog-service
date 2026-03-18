@@ -33,6 +33,9 @@ export class CategoryController {
     }
 
     async index(req: Request, res: Response) {
+        // const sleep = (ms: number) =>
+        //     new Promise((resolve) => setTimeout(resolve, ms));
+        // await sleep(5000);
         const categories = await this.categoryService.getAll();
         this.logger.info(`Getting categories list`);
         res.json(categories);

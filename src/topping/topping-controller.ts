@@ -33,6 +33,9 @@ export class ToppingController {
                 tenantId: req.body.tenantId,
             } as Topping);
             // todo: add logging
+
+            // todo: Send message to Kafka broker
+            // todo: Make a new topic => "topping"
             res.json({ id: savedTopping._id });
         } catch (err) {
             return next(err);

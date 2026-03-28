@@ -9,13 +9,17 @@ import createHttpError from "http-errors";
 import createToppingValidator from "./create-topping-validator";
 import { ToppingService } from "./topping-service";
 import { ToppingController } from "./topping-controller";
+import { createMessageProducerBroker } from "../common/factories/brokerFactory";
 
 const router = express.Router();
 
 const toppingService = new ToppingService();
+const broker = createMessageProducerBroker();
+
 const toppingController = new ToppingController(
     new S3Storage(),
     toppingService,
+    broker,
 );
 
 router.post(

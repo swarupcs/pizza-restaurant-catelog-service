@@ -4,11 +4,13 @@ import { v4 as uuidv4 } from "uuid";
 import { FileStorage } from "../common/types/storage";
 import { ToppingService } from "./topping-service";
 import { CreataeRequestBody, Topping } from "./topping-types";
+import { MessageProducerBroker } from "../common/types/broker";
 
 export class ToppingController {
     constructor(
         private storage: FileStorage,
         private toppingService: ToppingService,
+        private broker: MessageProducerBroker,
     ) {}
 
     create = async (
@@ -34,8 +36,17 @@ export class ToppingController {
             } as Topping);
             // todo: add logging
 
-            // todo: Send message to Kafka broker
-            // todo: Make a new topic => "topping"
+            // Send topping to kafka.
+            // todo: move topic name to the config
+            await this.broker.sendMessage(
+                "topping",
+                JSON.stringify({
+                    id: savedTopping._id,
+                    price: savedTopping.price,
+                    tenantId: savedTopping.tenantId,
+                }),
+            );
+
             res.json({ id: savedTopping._id });
         } catch (err) {
             return next(err);

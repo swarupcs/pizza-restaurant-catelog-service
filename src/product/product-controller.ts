@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { validationResult } from "express-validator";
 import createHttpError from "http-errors";
 import { ProductService } from "./product-service";
-import { Filter, Product } from "./product-types";
+import { Filter, Product, ProductEvents } from "./product-types";
 import { FileStorage } from "../common/types/storage";
 import { UploadedFile } from "express-fileupload";
 import { AuthRequest } from "../common/types";
@@ -65,14 +65,17 @@ export class ProductController {
         await this.broker.sendMessage(
             "product",
             JSON.stringify({
-                id: newProduct._id,
-                // todo: fix the typescript error
-                priceConfiguration: mapToObject(
-                    newProduct.priceConfiguration as unknown as Map<
-                        string,
-                        any
-                    >,
-                ),
+                event_type: ProductEvents.PRODUCT_CREATE,
+                data: {
+                    id: newProduct._id,
+                    // todo: fix the typescript error
+                    priceConfiguration: mapToObject(
+                        newProduct.priceConfiguration as unknown as Map<
+                            string,
+                            any
+                        >,
+                    ),
+                },
             }),
         );
 
@@ -152,13 +155,16 @@ export class ProductController {
         await this.broker.sendMessage(
             "product",
             JSON.stringify({
-                id: updatedProduct._id,
-                priceConfiguration: mapToObject(
-                    updatedProduct.priceConfiguration as unknown as Map<
-                        string,
-                        any
-                    >,
-                ),
+                event_type: ProductEvents.PRODUCT_UPDATE,
+                data: {
+                    id: updatedProduct._id,
+                    priceConfiguration: mapToObject(
+                        updatedProduct.priceConfiguration as unknown as Map<
+                            string,
+                            any
+                        >,
+                    ),
+                },
             }),
         );
 

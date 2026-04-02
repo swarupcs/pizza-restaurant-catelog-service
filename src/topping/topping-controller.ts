@@ -3,7 +3,7 @@ import { UploadedFile } from "express-fileupload";
 import { v4 as uuidv4 } from "uuid";
 import { FileStorage } from "../common/types/storage";
 import { ToppingService } from "./topping-service";
-import { CreataeRequestBody, Topping } from "./topping-types";
+import { CreataeRequestBody, Topping, ToppingEvents } from "./topping-types";
 import { MessageProducerBroker } from "../common/types/broker";
 
 export class ToppingController {
@@ -41,9 +41,12 @@ export class ToppingController {
             await this.broker.sendMessage(
                 "topping",
                 JSON.stringify({
-                    id: savedTopping._id,
-                    price: savedTopping.price,
-                    tenantId: savedTopping.tenantId,
+                    event_type: ToppingEvents.TOPPING_CREATE,
+                    data: {
+                        id: savedTopping._id,
+                        price: savedTopping.price,
+                        tenantId: savedTopping.tenantId,
+                    },
                 }),
             );
 

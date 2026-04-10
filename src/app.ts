@@ -16,7 +16,7 @@ const ALLOWED_DOMAINS = [
 
 app.use(
     cors({
-        origin: ALLOWED_DOMAINS,
+        origin: ALLOWED_DOMAINS as string[],
     }),
 );
 

@@ -18,9 +18,15 @@ export class KafkaProducerBroker implements MessageProducerBroker {
                 // ssl: config.get("kafka.ssl"),
                 connectionTimeout: 45000,
                 ssl: {
-                    ca: [fs.readFileSync("./kafka-certs/ca.pem", "utf-8")],
-                    key: fs.readFileSync("./kafka-certs/client.key", "utf-8"),
-                    cert: fs.readFileSync("./kafka-certs/client.crt", "utf-8"),
+                    ca: [fs.readFileSync("../../kafka-certs/ca.pem", "utf-8")],
+                    key: fs.readFileSync(
+                        "../../kafka-certs/client.key",
+                        "utf-8",
+                    ),
+                    cert: fs.readFileSync(
+                        "../../kafka-certs/client.crt",
+                        "utf-8",
+                    ),
                 },
                 sasl: {
                     mechanism: "plain",

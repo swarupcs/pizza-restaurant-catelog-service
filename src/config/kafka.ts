@@ -2,6 +2,7 @@ import config from "config";
 import { Kafka, KafkaConfig, Producer } from "kafkajs";
 import { MessageProducerBroker } from "../common/types/broker";
 import fs from "node:fs";
+import path from "node:path";
 
 export class KafkaProducerBroker implements MessageProducerBroker {
     private producer: Producer;
@@ -18,9 +19,17 @@ export class KafkaProducerBroker implements MessageProducerBroker {
                 // ssl: config.get("kafka.ssl"),
                 connectionTimeout: 45000,
                 ssl: {
-                    ca: [fs.readFileSync("../../kafka-certs/ca.pem")],
-                    key: fs.readFileSync("../../kafka-certs/client.key"),
-                    cert: fs.readFileSync("../../kafka-certs/client.crt"),
+                    ca: [
+                        fs.readFileSync(
+                            path.join(__dirname, "../../kafka-certs/ca.crt"),
+                        ),
+                    ],
+                    key: fs.readFileSync(
+                        path.join(__dirname, "../../kafka-certs/client.key"),
+                    ),
+                    cert: fs.readFileSync(
+                        path.join(__dirname, "../../kafka-certs/client.crt"),
+                    ),
                 },
                 sasl: {
                     mechanism: "plain",

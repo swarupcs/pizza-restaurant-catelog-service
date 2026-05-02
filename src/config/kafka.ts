@@ -21,7 +21,7 @@ export class KafkaProducerBroker implements MessageProducerBroker {
                 ssl: {
                     ca: [
                         fs.readFileSync(
-                            path.join(__dirname, "../../kafka-certs/ca.crt"),
+                            path.join(__dirname, "../../kafka-certs/ca.pem"),
                         ),
                     ],
                     key: fs.readFileSync(

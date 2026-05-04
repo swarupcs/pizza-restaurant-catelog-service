@@ -22,13 +22,16 @@ export class KafkaProducerBroker implements MessageProducerBroker {
                     ca: [
                         fs.readFileSync(
                             path.join(__dirname, "../../kafka-certs/ca.pem"),
+                            "utf-8",
                         ),
                     ],
                     key: fs.readFileSync(
                         path.join(__dirname, "../../kafka-certs/client.key"),
+                        "utf-8",
                     ),
                     cert: fs.readFileSync(
                         path.join(__dirname, "../../kafka-certs/client.crt"),
+                        "utf-8",
                     ),
                 },
                 sasl: {

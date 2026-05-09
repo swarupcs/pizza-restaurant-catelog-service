@@ -13,7 +13,7 @@ export class KafkaProducerBroker implements MessageProducerBroker {
             brokers,
         };
 
-        if (process.env.NODE_ENV === "productions") {
+        if (process.env.NODE_ENV === "production") {
             kafkaConfig = {
                 ...kafkaConfig,
                 // ssl: config.get("kafka.ssl"),

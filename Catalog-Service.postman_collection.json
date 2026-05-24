@@ -1,0 +1,384 @@
+{
+  "info": {
+    "_postman_id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+    "name": "Catalog Service",
+    "description": "Complete API collection for the Catalog Service.\n\n**Base URL:** `{{baseUrl}}`  (default: `http://localhost:5502`)\n\n**Auth:** Protected endpoints require an `accessToken` httpOnly cookie (set after login via auth-service).\n\n**Roles:**\n- `admin` – full access to create/update\n- `manager` – can create/update products & toppings for their own tenant\n- Public – can read categories, products, and toppings\n\n**Note:** Product and Topping create/update endpoints use `multipart/form-data` because they accept an image file upload (sent to AWS S3).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5502",
+      "type": "string"
+    },
+    {
+      "key": "categoryId",
+      "value": "65f1a2b3c4d5e6f7a8b9c0d1",
+      "type": "string",
+      "description": "MongoDB ObjectId of a category"
+    },
+    {
+      "key": "productId",
+      "value": "65f1a2b3c4d5e6f7a8b9c0d2",
+      "type": "string",
+      "description": "MongoDB ObjectId of a product"
+    },
+    {
+      "key": "tenantId",
+      "value": "1",
+      "type": "string",
+      "description": "Tenant (restaurant) ID from auth-service"
+    }
+  ],
+  "item": [
+    {
+      "name": "Categories",
+      "description": "Product category management (e.g., Pizza, Beverages).\n\nGET endpoints are public. POST and PATCH require admin role.",
+      "item": [
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pizza\",\n  \"priceConfiguration\": {\n    \"Size\": {\n      \"priceType\": \"base\",\n      \"availableOptions\": [\"Small\", \"Medium\", \"Large\"]\n    },\n    \"Crust\": {\n      \"priceType\": \"aditional\",\n      \"availableOptions\": [\"Thin\", \"Thick\"]\n    }\n  },\n  \"attributes\": [\n    {\n      \"name\": \"Wholewheat\",\n      \"widgetType\": \"switch\",\n      \"defaultValue\": \"No\",\n      \"availableOptions\": []\n    }\n  ]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            },
+            "description": "Create a new product category.\n\n**Auth required:** `accessToken` cookie with `admin` role.\n\n**Returns:** `{ id: string }` (MongoDB ObjectId)\n\n**Validation rules:**\n- `name` – required string\n- `priceConfiguration` – required object; each key's `priceType` must be `base` or `aditional`\n- `attributes` – required array"
+          },
+          "response": [
+            {
+              "name": "200 Created",
+              "originalRequest": {
+                "method": "POST",
+                "body": { "mode": "raw", "raw": "{\n  \"name\": \"Pizza\",\n  \"priceConfiguration\": {\n    \"Size\": { \"priceType\": \"base\", \"availableOptions\": [\"Small\", \"Medium\", \"Large\"] }\n  },\n  \"attributes\": []\n}" },
+                "url": { "raw": "{{baseUrl}}/categories" }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": \"65f1a2b3c4d5e6f7a8b9c0d1\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            },
+            "description": "Retrieve all product categories.\n\n**Auth required:** None (public).\n\n**Returns:** Array of Category objects."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/categories" } },
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "[\n  {\n    \"_id\": \"65f1a2b3c4d5e6f7a8b9c0d1\",\n    \"name\": \"Pizza\",\n    \"priceConfiguration\": {\n      \"Size\": { \"priceType\": \"base\", \"availableOptions\": [\"Small\", \"Medium\", \"Large\"] },\n      \"Crust\": { \"priceType\": \"aditional\", \"availableOptions\": [\"Thin\", \"Thick\"] }\n    },\n    \"attributes\": [\n      { \"name\": \"Wholewheat\", \"widgetType\": \"switch\", \"defaultValue\": \"No\", \"availableOptions\": [] }\n    ],\n    \"createdAt\": \"2024-01-01T00:00:00.000Z\",\n    \"updatedAt\": \"2024-01-01T00:00:00.000Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Get Category By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories/{{categoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "{{categoryId}}"]
+            },
+            "description": "Retrieve a single category by its MongoDB ObjectId.\n\n**Auth required:** None (public).\n\n**Returns:** Category object."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/categories/{{categoryId}}" } },
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"_id\": \"65f1a2b3c4d5e6f7a8b9c0d1\",\n  \"name\": \"Pizza\",\n  \"priceConfiguration\": {},\n  \"attributes\": []\n}"
+            },
+            {
+              "name": "404 Not Found",
+              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/categories/invalid-id" } },
+              "status": "Not Found",
+              "code": 404,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"errors\": [{ \"type\": \"HttpError\", \"message\": \"Category not found\" }]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pizza (Updated)\",\n  \"priceConfiguration\": {\n    \"Size\": {\n      \"priceType\": \"base\",\n      \"availableOptions\": [\"Small\", \"Medium\", \"Large\", \"XL\"]\n    }\n  },\n  \"attributes\": [\n    {\n      \"name\": \"Wholewheat\",\n      \"widgetType\": \"switch\",\n      \"defaultValue\": \"No\",\n      \"availableOptions\": []\n    }\n  ]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categories/{{categoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "{{categoryId}}"]
+            },
+            "description": "Update an existing category. Price configurations are deep-merged with existing data.\n\n**Auth required:** `accessToken` cookie with `admin` role.\n\n**Returns:** `{ id: string }`"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PATCH",
+                "url": { "raw": "{{baseUrl}}/categories/{{categoryId}}" }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": \"65f1a2b3c4d5e6f7a8b9c0d1\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "description": "Product management for a restaurant tenant.\n\n**Note:** Create and Update use `multipart/form-data` with an `image` file field (max 500 KB). Other fields are sent as form fields.\n\n`priceConfiguration` and `attributes` must be JSON strings (serialised with `JSON.stringify`) when sent as form fields.",
+      "item": [
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "Margherita Pizza", "type": "text" },
+                { "key": "description", "value": "Classic tomato and mozzarella pizza", "type": "text" },
+                { "key": "tenantId", "value": "{{tenantId}}", "type": "text" },
+                { "key": "categoryId", "value": "{{categoryId}}", "type": "text" },
+                { "key": "isPublish", "value": "true", "type": "text" },
+                {
+                  "key": "priceConfiguration",
+                  "value": "{\"Size\":{\"priceType\":\"base\",\"availableOptions\":{\"Small\":149,\"Medium\":199,\"Large\":249}}}",
+                  "type": "text",
+                  "description": "JSON string of price configuration"
+                },
+                {
+                  "key": "attributes",
+                  "value": "[{\"name\":\"Wholewheat\",\"value\":\"No\"}]",
+                  "type": "text",
+                  "description": "JSON string of attributes array"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": [],
+                  "description": "Product image file (max 500 KB)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"]
+            },
+            "description": "Create a new product with an image.\n\n**Auth required:** `accessToken` cookie with `admin` or `manager` role.\n\n**Body type:** `multipart/form-data`\n\n**Fields:**\n- `name` – required\n- `description` – required\n- `tenantId` – restaurant ID\n- `categoryId` – MongoDB ObjectId\n- `isPublish` – `true` or `false`\n- `priceConfiguration` – JSON string\n- `attributes` – JSON string (array)\n- `image` – file (max 500 KB)\n\n**Returns:** `{ id: string }`\n\n**Side effect:** Publishes a `PRODUCT_CREATE` event to the `product` Kafka topic."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/products" } },
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": \"65f1a2b3c4d5e6f7a8b9c0d2\"\n}"
+            },
+            {
+              "name": "400 File Too Large",
+              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/products" } },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"errors\": [{ \"type\": \"HttpError\", \"message\": \"File size exceeds the limit\" }]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products?tenantId={{tenantId}}&categoryId=&isPublish=true&q=&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"],
+              "query": [
+                { "key": "tenantId", "value": "{{tenantId}}", "description": "Filter by restaurant ID" },
+                { "key": "categoryId", "value": "", "description": "Filter by category MongoDB ObjectId (optional)" },
+                { "key": "isPublish", "value": "true", "description": "Filter by published status: true or false (optional)" },
+                { "key": "q", "value": "", "description": "Search query by product name (optional)" },
+                { "key": "page", "value": "1", "description": "Page number (default: 1)" },
+                { "key": "limit", "value": "10", "description": "Items per page (default: 10)" }
+              ]
+            },
+            "description": "Retrieve a paginated list of products with optional filters.\n\n**Auth required:** None (public).\n\n**Returns:** `{ data, total, pageSize, currentPage }` – image field contains the full S3 URL."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/products?tenantId=1&isPublish=true" } },
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"data\": [\n    {\n      \"_id\": \"65f1a2b3c4d5e6f7a8b9c0d2\",\n      \"name\": \"Margherita Pizza\",\n      \"description\": \"Classic tomato and mozzarella pizza\",\n      \"image\": \"https://catalog-service-dev.s3.ap-south-1.amazonaws.com/some-uuid\",\n      \"tenantId\": \"1\",\n      \"categoryId\": \"65f1a2b3c4d5e6f7a8b9c0d1\",\n      \"isPublish\": true,\n      \"priceConfiguration\": {},\n      \"attributes\": []\n    }\n  ],\n  \"total\": 1,\n  \"pageSize\": 10,\n  \"currentPage\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "Margherita Pizza (Updated)", "type": "text" },
+                { "key": "description", "value": "Updated classic pizza", "type": "text" },
+                { "key": "tenantId", "value": "{{tenantId}}", "type": "text" },
+                { "key": "categoryId", "value": "{{categoryId}}", "type": "text" },
+                { "key": "isPublish", "value": "true", "type": "text" },
+                {
+                  "key": "priceConfiguration",
+                  "value": "{\"Size\":{\"priceType\":\"base\",\"availableOptions\":{\"Small\":159,\"Medium\":209,\"Large\":269}}}",
+                  "type": "text"
+                },
+                {
+                  "key": "attributes",
+                  "value": "[{\"name\":\"Wholewheat\",\"value\":\"Yes\"}]",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": [],
+                  "description": "New product image (optional — omit to keep existing image)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{productId}}"]
+            },
+            "description": "Update an existing product. Image is optional — if not provided, the existing image is kept.\n\n**Auth required:** `accessToken` cookie with `admin` or `manager` role. Managers can only update their own tenant's products.\n\n**Body type:** `multipart/form-data`\n\n**Returns:** `{ id: string }`\n\n**Side effect:** Publishes a `PRODUCT_UPDATE` event to the `product` Kafka topic."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": { "method": "PUT", "url": { "raw": "{{baseUrl}}/products/{{productId}}" } },
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": \"65f1a2b3c4d5e6f7a8b9c0d2\"\n}"
+            },
+            {
+              "name": "403 Forbidden (Wrong Tenant)",
+              "originalRequest": { "method": "PUT", "url": { "raw": "{{baseUrl}}/products/{{productId}}" } },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"errors\": [{ \"type\": \"HttpError\", \"message\": \"You are not allowed to access this product\" }]\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Toppings",
+      "description": "Pizza topping management.\n\nCreate requires `admin` or `manager` role. GET is public.",
+      "item": [
+        {
+          "name": "Create Topping",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "Extra Cheese", "type": "text" },
+                { "key": "price", "value": "49", "type": "text" },
+                { "key": "tenantId", "value": "{{tenantId}}", "type": "text" },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": [],
+                  "description": "Topping image file (max 500 KB)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/toppings",
+              "host": ["{{baseUrl}}"],
+              "path": ["toppings"]
+            },
+            "description": "Create a new topping with an image.\n\n**Auth required:** `accessToken` cookie with `admin` or `manager` role.\n\n**Body type:** `multipart/form-data`\n\n**Fields:**\n- `name` – required string\n- `price` – required number\n- `tenantId` – required restaurant ID\n- `image` – required file (max 500 KB)\n\n**Returns:** `{ id: string }`\n\n**Side effect:** Publishes a `TOPPING_CREATE` event to the `topping` Kafka topic."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": { "method": "POST", "url": { "raw": "{{baseUrl}}/toppings" } },
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "{\n  \"id\": \"65f1a2b3c4d5e6f7a8b9c0d3\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get All Toppings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/toppings?tenantId={{tenantId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["toppings"],
+              "query": [
+                { "key": "tenantId", "value": "{{tenantId}}", "description": "Filter toppings by restaurant/tenant ID" }
+              ]
+            },
+            "description": "Retrieve all toppings for a given tenant.\n\n**Auth required:** None (public).\n\n**Returns:** Array of Topping objects with full S3 image URLs."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": { "method": "GET", "url": { "raw": "{{baseUrl}}/toppings?tenantId=1" } },
+              "status": "OK",
+              "code": 200,
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": "[\n  {\n    \"id\": \"65f1a2b3c4d5e6f7a8b9c0d3\",\n    \"name\": \"Extra Cheese\",\n    \"price\": 49,\n    \"tenantId\": \"1\",\n    \"image\": \"https://catalog-service-dev.s3.ap-south-1.amazonaws.com/some-uuid\"\n  }\n]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

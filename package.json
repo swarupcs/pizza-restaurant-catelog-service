@@ -56,6 +56,7 @@
         "cookie-parser": "^1.4.6",
         "cors": "^2.8.5",
         "cross-env": "^7.0.3",
+        "dotenv": "^17.4.2",
         "express": "^4.18.2",
         "express-fileupload": "^1.4.3",
         "express-jwt": "^8.4.1",

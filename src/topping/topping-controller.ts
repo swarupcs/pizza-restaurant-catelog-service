@@ -25,7 +25,7 @@ export class ToppingController {
             // todo: add error handling
             await this.storage.upload({
                 filename: fileUuid,
-                fileData: image.data.buffer,
+                fileData: image.data.buffer as ArrayBuffer,
             });
 
             // todo: add error handling

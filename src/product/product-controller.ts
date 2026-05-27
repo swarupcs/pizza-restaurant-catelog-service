@@ -31,7 +31,7 @@ export class ProductController {
 
         await this.storage.upload({
             filename: imageName,
-            fileData: image.data.buffer,
+            fileData: image.data.buffer as ArrayBuffer,
         });
 
         const {
@@ -118,7 +118,7 @@ export class ProductController {
 
             await this.storage.upload({
                 filename: imageName,
-                fileData: image.data.buffer,
+                fileData: image.data.buffer as ArrayBuffer,
             });
 
             await this.storage.delete(oldImage);

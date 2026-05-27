@@ -137,5 +137,7 @@ dist
 
 logs
 
-# node-config: only ignore production secrets, commit dev/test configs
+# node-config: ignore all local and production configurations
 config/production.yaml
+config/development.yaml
+config/default.yaml

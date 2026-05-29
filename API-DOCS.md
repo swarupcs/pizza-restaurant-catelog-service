@@ -13,11 +13,11 @@ Protected endpoints rely on the `accessToken` **httpOnly cookie** set by the aut
 
 ### Roles
 
-| Role | Access |
-|---|---|
-| `admin` | Full CRUD on categories, products, and toppings |
+| Role      | Access                                                        |
+| --------- | ------------------------------------------------------------- |
+| `admin`   | Full CRUD on categories, products, and toppings               |
 | `manager` | Create and update products/toppings for their own tenant only |
-| Public | Read-only access to all categories, products, and toppings |
+| Public    | Read-only access to all categories, products, and toppings    |
 
 ### Image Uploads
 
@@ -45,51 +45,51 @@ Create a new product category.
 
 ```json
 {
-  "name": "Pizza",
-  "priceConfiguration": {
-    "Size": {
-      "priceType": "base",
-      "availableOptions": ["Small", "Medium", "Large"]
+    "name": "Pizza",
+    "priceConfiguration": {
+        "Size": {
+            "priceType": "base",
+            "availableOptions": ["Small", "Medium", "Large"]
+        },
+        "Crust": {
+            "priceType": "aditional",
+            "availableOptions": ["Thin", "Thick"]
+        }
     },
-    "Crust": {
-      "priceType": "aditional",
-      "availableOptions": ["Thin", "Thick"]
-    }
-  },
-  "attributes": [
-    {
-      "name": "Wholewheat",
-      "widgetType": "switch",
-      "defaultValue": "No",
-      "availableOptions": []
-    }
-  ]
+    "attributes": [
+        {
+            "name": "Wholewheat",
+            "widgetType": "switch",
+            "defaultValue": "No",
+            "availableOptions": []
+        }
+    ]
 }
 ```
 
-| Field | Type | Required | Validation |
-|---|---|---|---|
-| `name` | string | ✅ | Non-empty string |
-| `priceConfiguration` | object | ✅ | Each key must have `priceType` of `base` or `aditional` |
-| `attributes` | array | ✅ | Non-empty array |
+| Field                | Type   | Required | Validation                                              |
+| -------------------- | ------ | -------- | ------------------------------------------------------- |
+| `name`               | string | ✅       | Non-empty string                                        |
+| `priceConfiguration` | object | ✅       | Each key must have `priceType` of `base` or `aditional` |
+| `attributes`         | array  | ✅       | Non-empty array                                         |
 
 **`priceConfiguration` structure:**
 
 Each key is a dimension name (e.g., `"Size"`):
 
-| Field | Type | Values |
-|---|---|---|
-| `priceType` | string | `"base"` (base price of item) or `"aditional"` (add-on cost) |
+| Field              | Type     | Values                                                       |
+| ------------------ | -------- | ------------------------------------------------------------ |
+| `priceType`        | string   | `"base"` (base price of item) or `"aditional"` (add-on cost) |
 | `availableOptions` | string[] | List of option labels (e.g., `["Small", "Medium", "Large"]`) |
 
 **`attributes` item structure:**
 
-| Field | Type | Description |
-|---|---|---|
-| `name` | string | Attribute label (e.g., `"Wholewheat"`) |
-| `widgetType` | string | UI widget type: `"switch"`, `"radio"` |
-| `defaultValue` | string | Default selected value |
-| `availableOptions` | string[] | Selectable options (empty for switch) |
+| Field              | Type     | Description                            |
+| ------------------ | -------- | -------------------------------------- |
+| `name`             | string   | Attribute label (e.g., `"Wholewheat"`) |
+| `widgetType`       | string   | UI widget type: `"switch"`, `"radio"`  |
+| `defaultValue`     | string   | Default selected value                 |
+| `availableOptions` | string[] | Selectable options (empty for switch)  |
 
 **Response — `200 OK`:**
 
@@ -101,7 +101,7 @@ Each key is a dimension name (e.g., `"Size"`):
 
 ```json
 {
-  "errors": [{ "type": "HttpError", "message": "Category name is required" }]
+    "errors": [{ "type": "HttpError", "message": "Category name is required" }]
 }
 ```
 
@@ -109,7 +109,12 @@ Each key is a dimension name (e.g., `"Size"`):
 
 ```json
 {
-  "errors": [{ "type": "ForbiddenError", "message": "You don't have enough permissions" }]
+    "errors": [
+        {
+            "type": "ForbiddenError",
+            "message": "You don't have enough permissions"
+        }
+    ]
 }
 ```
 
@@ -127,30 +132,30 @@ Retrieve all product categories.
 
 ```json
 [
-  {
-    "_id": "65f1a2b3c4d5e6f7a8b9c0d1",
-    "name": "Pizza",
-    "priceConfiguration": {
-      "Size": {
-        "priceType": "base",
-        "availableOptions": ["Small", "Medium", "Large"]
-      },
-      "Crust": {
-        "priceType": "aditional",
-        "availableOptions": ["Thin", "Thick"]
-      }
-    },
-    "attributes": [
-      {
-        "name": "Wholewheat",
-        "widgetType": "switch",
-        "defaultValue": "No",
-        "availableOptions": []
-      }
-    ],
-    "createdAt": "2024-01-01T00:00:00.000Z",
-    "updatedAt": "2024-01-01T00:00:00.000Z"
-  }
+    {
+        "_id": "65f1a2b3c4d5e6f7a8b9c0d1",
+        "name": "Pizza",
+        "priceConfiguration": {
+            "Size": {
+                "priceType": "base",
+                "availableOptions": ["Small", "Medium", "Large"]
+            },
+            "Crust": {
+                "priceType": "aditional",
+                "availableOptions": ["Thin", "Thick"]
+            }
+        },
+        "attributes": [
+            {
+                "name": "Wholewheat",
+                "widgetType": "switch",
+                "defaultValue": "No",
+                "availableOptions": []
+            }
+        ],
+        "createdAt": "2024-01-01T00:00:00.000Z",
+        "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
 ]
 ```
 
@@ -164,18 +169,18 @@ Retrieve a single category by its MongoDB ObjectId.
 
 **Path Parameters:**
 
-| Parameter | Type | Description |
-|---|---|---|
+| Parameter    | Type   | Description                      |
+| ------------ | ------ | -------------------------------- |
 | `categoryId` | string | MongoDB ObjectId of the category |
 
 **Response — `200 OK`:**
 
 ```json
 {
-  "_id": "65f1a2b3c4d5e6f7a8b9c0d1",
-  "name": "Pizza",
-  "priceConfiguration": {},
-  "attributes": []
+    "_id": "65f1a2b3c4d5e6f7a8b9c0d1",
+    "name": "Pizza",
+    "priceConfiguration": {},
+    "attributes": []
 }
 ```
 
@@ -183,7 +188,7 @@ Retrieve a single category by its MongoDB ObjectId.
 
 ```json
 {
-  "errors": [{ "type": "HttpError", "message": "Category not found" }]
+    "errors": [{ "type": "HttpError", "message": "Category not found" }]
 }
 ```
 
@@ -197,29 +202,29 @@ Update an existing category. The `priceConfiguration` object is **deep-merged** 
 
 **Path Parameters:**
 
-| Parameter | Type | Description |
-|---|---|---|
-| `id` | string | MongoDB ObjectId of the category |
+| Parameter | Type   | Description                      |
+| --------- | ------ | -------------------------------- |
+| `id`      | string | MongoDB ObjectId of the category |
 
 **Request Body** (`application/json`):
 
 ```json
 {
-  "name": "Pizza (Updated)",
-  "priceConfiguration": {
-    "Size": {
-      "priceType": "base",
-      "availableOptions": ["Small", "Medium", "Large", "XL"]
-    }
-  },
-  "attributes": [
-    {
-      "name": "Wholewheat",
-      "widgetType": "switch",
-      "defaultValue": "No",
-      "availableOptions": []
-    }
-  ]
+    "name": "Pizza (Updated)",
+    "priceConfiguration": {
+        "Size": {
+            "priceType": "base",
+            "availableOptions": ["Small", "Medium", "Large", "XL"]
+        }
+    },
+    "attributes": [
+        {
+            "name": "Wholewheat",
+            "widgetType": "switch",
+            "defaultValue": "No",
+            "availableOptions": []
+        }
+    ]
 }
 ```
 
@@ -233,7 +238,7 @@ Update an existing category. The `priceConfiguration` object is **deep-merged** 
 
 ```json
 {
-  "errors": [{ "type": "HttpError", "message": "Category not found" }]
+    "errors": [{ "type": "HttpError", "message": "Category not found" }]
 }
 ```
 
@@ -259,36 +264,36 @@ Create a new product with an image.
 
 **Form Fields:**
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `name` | string | ✅ | Product name |
-| `description` | string | ✅ | Product description |
-| `tenantId` | string | ✅ | Restaurant ID |
-| `categoryId` | string | ✅ | MongoDB ObjectId of the category |
-| `isPublish` | string | ✅ | `"true"` or `"false"` |
-| `priceConfiguration` | string | ✅ | JSON-stringified price config object |
-| `attributes` | string | ✅ | JSON-stringified attributes array |
-| `image` | file | ✅ | Product image (max 500 KB) |
+| Field                | Type   | Required | Description                          |
+| -------------------- | ------ | -------- | ------------------------------------ |
+| `name`               | string | ✅       | Product name                         |
+| `description`        | string | ✅       | Product description                  |
+| `tenantId`           | string | ✅       | Restaurant ID                        |
+| `categoryId`         | string | ✅       | MongoDB ObjectId of the category     |
+| `isPublish`          | string | ✅       | `"true"` or `"false"`                |
+| `priceConfiguration` | string | ✅       | JSON-stringified price config object |
+| `attributes`         | string | ✅       | JSON-stringified attributes array    |
+| `image`              | file   | ✅       | Product image (max 500 KB)           |
 
 **`priceConfiguration` JSON string example:**
 
 ```json
 {
-  "Size": {
-    "priceType": "base",
-    "availableOptions": {
-      "Small": 149,
-      "Medium": 199,
-      "Large": 249
+    "Size": {
+        "priceType": "base",
+        "availableOptions": {
+            "Small": 149,
+            "Medium": 199,
+            "Large": 249
+        }
+    },
+    "Crust": {
+        "priceType": "aditional",
+        "availableOptions": {
+            "Thin": 0,
+            "Thick": 30
+        }
     }
-  },
-  "Crust": {
-    "priceType": "aditional",
-    "availableOptions": {
-      "Thin": 0,
-      "Thick": 30
-    }
-  }
 }
 ```
 
@@ -297,9 +302,7 @@ Create a new product with an image.
 **`attributes` JSON string example:**
 
 ```json
-[
-  { "name": "Wholewheat", "value": "No" }
-]
+[{ "name": "Wholewheat", "value": "No" }]
 ```
 
 **Response — `200 OK`:**
@@ -314,7 +317,9 @@ Create a new product with an image.
 
 ```json
 {
-  "errors": [{ "type": "HttpError", "message": "File size exceeds the limit" }]
+    "errors": [
+        { "type": "HttpError", "message": "File size exceeds the limit" }
+    ]
 }
 ```
 
@@ -328,16 +333,17 @@ Retrieve a paginated list of products with optional filters.
 
 **Query Parameters:**
 
-| Parameter | Type | Default | Description |
-|---|---|---|---|
-| `tenantId` | string | — | Filter by restaurant ID |
-| `categoryId` | string | — | Filter by category MongoDB ObjectId |
-| `isPublish` | string | — | `"true"` to show only published products |
-| `q` | string | — | Search by product name |
-| `page` | number | `1` | Page number |
-| `limit` | number | `10` | Items per page |
+| Parameter    | Type   | Default | Description                              |
+| ------------ | ------ | ------- | ---------------------------------------- |
+| `tenantId`   | string | —       | Filter by restaurant ID                  |
+| `categoryId` | string | —       | Filter by category MongoDB ObjectId      |
+| `isPublish`  | string | —       | `"true"` to show only published products |
+| `q`          | string | —       | Search by product name                   |
+| `page`       | number | `1`     | Page number                              |
+| `limit`      | number | `10`    | Items per page                           |
 
 **Example Request:**
+
 ```
 GET /products?tenantId=1&isPublish=true&page=1&limit=10
 ```
@@ -346,27 +352,31 @@ GET /products?tenantId=1&isPublish=true&page=1&limit=10
 
 ```json
 {
-  "data": [
-    {
-      "_id": "65f1a2b3c4d5e6f7a8b9c0d2",
-      "name": "Margherita Pizza",
-      "description": "Classic tomato and mozzarella pizza",
-      "image": "https://catalog-service-dev.s3.ap-south-1.amazonaws.com/some-uuid",
-      "tenantId": "1",
-      "categoryId": "65f1a2b3c4d5e6f7a8b9c0d1",
-      "isPublish": true,
-      "priceConfiguration": {
-        "Size": {
-          "priceType": "base",
-          "availableOptions": { "Small": 149, "Medium": 199, "Large": 249 }
+    "data": [
+        {
+            "_id": "65f1a2b3c4d5e6f7a8b9c0d2",
+            "name": "Margherita Pizza",
+            "description": "Classic tomato and mozzarella pizza",
+            "image": "https://catalog-service-dev.s3.ap-south-1.amazonaws.com/some-uuid",
+            "tenantId": "1",
+            "categoryId": "65f1a2b3c4d5e6f7a8b9c0d1",
+            "isPublish": true,
+            "priceConfiguration": {
+                "Size": {
+                    "priceType": "base",
+                    "availableOptions": {
+                        "Small": 149,
+                        "Medium": 199,
+                        "Large": 249
+                    }
+                }
+            },
+            "attributes": [{ "name": "Wholewheat", "value": "No" }]
         }
-      },
-      "attributes": [{ "name": "Wholewheat", "value": "No" }]
-    }
-  ],
-  "total": 1,
-  "pageSize": 10,
-  "currentPage": 1
+    ],
+    "total": 1,
+    "pageSize": 10,
+    "currentPage": 1
 }
 ```
 
@@ -384,24 +394,24 @@ Update an existing product. Image is optional — if no new image is uploaded, t
 
 **Path Parameters:**
 
-| Parameter | Type | Description |
-|---|---|---|
+| Parameter   | Type   | Description                     |
+| ----------- | ------ | ------------------------------- |
 | `productId` | string | MongoDB ObjectId of the product |
 
 **Body type:** `multipart/form-data`
 
 **Form Fields:**
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `name` | string | ✅ | Product name |
-| `description` | string | ✅ | Product description |
-| `tenantId` | string | ✅ | Restaurant ID |
-| `categoryId` | string | ✅ | Category MongoDB ObjectId |
-| `isPublish` | string | ✅ | `"true"` or `"false"` |
-| `priceConfiguration` | string | ✅ | JSON-stringified price config object |
-| `attributes` | string | ✅ | JSON-stringified attributes array |
-| `image` | file | ❌ | New image (optional). If omitted, existing image is kept. |
+| Field                | Type   | Required | Description                                               |
+| -------------------- | ------ | -------- | --------------------------------------------------------- |
+| `name`               | string | ✅       | Product name                                              |
+| `description`        | string | ✅       | Product description                                       |
+| `tenantId`           | string | ✅       | Restaurant ID                                             |
+| `categoryId`         | string | ✅       | Category MongoDB ObjectId                                 |
+| `isPublish`          | string | ✅       | `"true"` or `"false"`                                     |
+| `priceConfiguration` | string | ✅       | JSON-stringified price config object                      |
+| `attributes`         | string | ✅       | JSON-stringified attributes array                         |
+| `image`              | file   | ❌       | New image (optional). If omitted, existing image is kept. |
 
 **Response — `200 OK`:**
 
@@ -415,7 +425,12 @@ Update an existing product. Image is optional — if no new image is uploaded, t
 
 ```json
 {
-  "errors": [{ "type": "HttpError", "message": "You are not allowed to access this product" }]
+    "errors": [
+        {
+            "type": "HttpError",
+            "message": "You are not allowed to access this product"
+        }
+    ]
 }
 ```
 
@@ -423,7 +438,7 @@ Update an existing product. Image is optional — if no new image is uploaded, t
 
 ```json
 {
-  "errors": [{ "type": "HttpError", "message": "Product not found" }]
+    "errors": [{ "type": "HttpError", "message": "Product not found" }]
 }
 ```
 
@@ -449,12 +464,12 @@ Create a new topping with an image.
 
 **Form Fields:**
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `name` | string | ✅ | Topping name |
-| `price` | number | ✅ | Price in ₹ (e.g., `49`) |
-| `tenantId` | string | ✅ | Restaurant ID |
-| `image` | file | ✅ | Topping image (max 500 KB) |
+| Field      | Type   | Required | Description                |
+| ---------- | ------ | -------- | -------------------------- |
+| `name`     | string | ✅       | Topping name               |
+| `price`    | number | ✅       | Price in ₹ (e.g., `49`)    |
+| `tenantId` | string | ✅       | Restaurant ID              |
+| `image`    | file   | ✅       | Topping image (max 500 KB) |
 
 **Response — `200 OK`:**
 
@@ -468,7 +483,7 @@ Create a new topping with an image.
 
 ```json
 {
-  "errors": [{ "type": "HttpError", "message": "Topping image is required" }]
+    "errors": [{ "type": "HttpError", "message": "Topping image is required" }]
 }
 ```
 
@@ -482,11 +497,12 @@ Retrieve all toppings for a given tenant.
 
 **Query Parameters:**
 
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-| `tenantId` | string | ✅ | Filter toppings by restaurant ID |
+| Parameter  | Type   | Required | Description                      |
+| ---------- | ------ | -------- | -------------------------------- |
+| `tenantId` | string | ✅       | Filter toppings by restaurant ID |
 
 **Example Request:**
+
 ```
 GET /toppings?tenantId=1
 ```
@@ -495,13 +511,13 @@ GET /toppings?tenantId=1
 
 ```json
 [
-  {
-    "id": "65f1a2b3c4d5e6f7a8b9c0d3",
-    "name": "Extra Cheese",
-    "price": 49,
-    "tenantId": "1",
-    "image": "https://catalog-service-dev.s3.ap-south-1.amazonaws.com/some-uuid"
-  }
+    {
+        "id": "65f1a2b3c4d5e6f7a8b9c0d3",
+        "name": "Extra Cheese",
+        "price": 49,
+        "tenantId": "1",
+        "image": "https://catalog-service-dev.s3.ap-south-1.amazonaws.com/some-uuid"
+    }
 ]
 ```
 
@@ -511,17 +527,17 @@ GET /toppings?tenantId=1
 
 ## 📋 Endpoint Summary
 
-| Method | Endpoint | Auth | Role | Body Type |
-|---|---|---|---|---|
-| `POST` | `/categories` | ✅ Cookie | Admin | JSON |
-| `GET` | `/categories` | ❌ Public | — | — |
-| `GET` | `/categories/:categoryId` | ❌ Public | — | — |
-| `PATCH` | `/categories/:id` | ✅ Cookie | Admin | JSON |
-| `POST` | `/products` | ✅ Cookie | Admin / Manager | `multipart/form-data` |
-| `GET` | `/products` | ❌ Public | — | — |
-| `PUT` | `/products/:productId` | ✅ Cookie | Admin / Manager | `multipart/form-data` |
-| `POST` | `/toppings` | ✅ Cookie | Admin / Manager | `multipart/form-data` |
-| `GET` | `/toppings` | ❌ Public | — | — |
+| Method  | Endpoint                  | Auth      | Role            | Body Type             |
+| ------- | ------------------------- | --------- | --------------- | --------------------- |
+| `POST`  | `/categories`             | ✅ Cookie | Admin           | JSON                  |
+| `GET`   | `/categories`             | ❌ Public | —               | —                     |
+| `GET`   | `/categories/:categoryId` | ❌ Public | —               | —                     |
+| `PATCH` | `/categories/:id`         | ✅ Cookie | Admin           | JSON                  |
+| `POST`  | `/products`               | ✅ Cookie | Admin / Manager | `multipart/form-data` |
+| `GET`   | `/products`               | ❌ Public | —               | —                     |
+| `PUT`   | `/products/:productId`    | ✅ Cookie | Admin / Manager | `multipart/form-data` |
+| `POST`  | `/toppings`               | ✅ Cookie | Admin / Manager | `multipart/form-data` |
+| `GET`   | `/toppings`               | ❌ Public | —               | —                     |
 
 ---
 
@@ -529,31 +545,31 @@ GET /toppings?tenantId=1
 
 ```json
 {
-  "errors": [
-    {
-      "type": "HttpError | ForbiddenError | UnauthorizedError",
-      "message": "Human-readable error message"
-    }
-  ]
+    "errors": [
+        {
+            "type": "HttpError | ForbiddenError | UnauthorizedError",
+            "message": "Human-readable error message"
+        }
+    ]
 }
 ```
 
-| Status | Meaning |
-|---|---|
-| `400` | Validation error, bad input, or file too large |
-| `401` | Missing or expired `accessToken` cookie |
-| `403` | Authenticated but insufficient role |
-| `404` | Resource not found |
-| `500` | Internal server error |
+| Status | Meaning                                        |
+| ------ | ---------------------------------------------- |
+| `400`  | Validation error, bad input, or file too large |
+| `401`  | Missing or expired `accessToken` cookie        |
+| `403`  | Authenticated but insufficient role            |
+| `404`  | Resource not found                             |
+| `500`  | Internal server error                          |
 
 ---
 
 ## 🔗 Kafka Events Published
 
-| Event | Topic | Trigger |
-|---|---|---|
+| Event            | Topic     | Trigger             |
+| ---------------- | --------- | ------------------- |
 | `PRODUCT_CREATE` | `product` | New product created |
-| `PRODUCT_UPDATE` | `product` | Product updated |
+| `PRODUCT_UPDATE` | `product` | Product updated     |
 | `TOPPING_CREATE` | `topping` | New topping created |
 
 These events are consumed by the **order-service** to keep its local pricing cache up to date.

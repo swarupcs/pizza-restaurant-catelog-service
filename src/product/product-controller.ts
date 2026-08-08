@@ -55,9 +55,7 @@ export class ProductController {
             image: imageName,
         };
 
-        const newProduct = await this.productService.createProduct(
-            product as unknown as Product,
-        );
+        const newProduct = await this.productService.createProduct(product);
 
         // Send product to kafka.
         // todo: move topic name to the config
@@ -88,7 +86,7 @@ export class ProductController {
             return next(createHttpError(400, result.array()[0].msg as string));
         }
 
-        const { productId } = req.params;
+        const productId = String(req.params.productId);
 
         const product = await this.productService.getProduct(productId);
         if (!product) {

@@ -39,7 +39,7 @@ export class CategoryController {
             return next(createHttpError(400, result.array()[0].msg as string));
         }
 
-        const categoryId = req.params.id;
+        const categoryId = String(req.params.id);
         const updateData = req.body as Partial<Category>;
 
         // Check if category exists
@@ -87,7 +87,7 @@ export class CategoryController {
     }
 
     async getOne(req: Request, res: Response, next: NextFunction) {
-        const { categoryId } = req.params;
+        const categoryId = String(req.params.categoryId);
         const category = await this.categoryService.getOne(categoryId);
         if (!category) {
             return next(createHttpError(404, "Category not found"));

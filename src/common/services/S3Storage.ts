@@ -27,7 +27,7 @@ export class S3Storage implements FileStorage {
         };
 
         // todo: add proper filedata type
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
         // @ts-ignore
         return await this.client.send(new PutObjectCommand(objectParams));
     }
@@ -39,7 +39,7 @@ export class S3Storage implements FileStorage {
         };
 
         // todo: add proper filedata type
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
         // @ts-ignore
         return await this.client.send(new DeleteObjectCommand(objectParams));
     }

@@ -3,7 +3,7 @@ import { UploadedFile } from "express-fileupload";
 import { v4 as uuidv4 } from "uuid";
 import { FileStorage } from "../common/types/storage";
 import { ToppingService } from "./topping-service";
-import { CreataeRequestBody, Topping, ToppingEvents } from "./topping-types";
+import { CreataeRequestBody, ToppingEvents } from "./topping-types";
 import { MessageProducerBroker } from "../common/types/broker";
 
 export class ToppingController {
@@ -33,7 +33,7 @@ export class ToppingController {
                 ...req.body,
                 image: fileUuid,
                 tenantId: req.body.tenantId,
-            } as Topping);
+            });
             // todo: add logging
 
             // Send topping to kafka.

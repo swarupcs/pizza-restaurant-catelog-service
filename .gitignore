@@ -141,3 +141,4 @@ logs
 config/production.yaml
 config/development.yaml
 config/default.yaml
+.husky/_/

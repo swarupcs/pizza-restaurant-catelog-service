@@ -14,11 +14,11 @@
 
 #### Fields
 
--   name string
--   image string
--   price number
--   tenantId string
--   isPublish boolean
+- name string
+- image string
+- price number
+- tenantId string
+- isPublish boolean
 
 [ ] Create toppings
 [ ] Update toppings

@@ -12,7 +12,7 @@
         "lint:fix": "eslint . --fix",
         "prepare": "husky install",
         "test:watch": "jest --watch --runInBand",
-        "start": "ts-node src/index.ts",
+        "start": "node dist/src/server.js",
         "test": "jest --runInBand"
     },
     "author": "Swarup Das",

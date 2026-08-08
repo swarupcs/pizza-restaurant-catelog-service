@@ -1,6 +1,12 @@
 import "dotenv/config";
 import dns from "dns";
-dns.setServers(["8.8.8.8", "8.8.4.4"]);
+
+// Local workaround for MongoDB SRV lookups failing on some ISP resolvers.
+// Never in production: overriding the resolver process-wide breaks resolution
+// of private/internal hostnames on a hosted environment.
+if (process.env.NODE_ENV !== "production") {
+    dns.setServers(["8.8.8.8", "8.8.4.4"]);
+}
 
 import config from "config";
 import app from "./app";
